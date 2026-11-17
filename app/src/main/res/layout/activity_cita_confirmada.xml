@@ -61,6 +61,7 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/success_appointment_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/appointment_details"
@@ -69,6 +70,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/success_appointment_date_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
