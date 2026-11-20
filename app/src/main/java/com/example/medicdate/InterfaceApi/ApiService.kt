@@ -4,6 +4,8 @@ import com.example.medicdate.Modelo.LoginRequest
 import com.example.medicdate.Modelo.dataCuenta
 import com.example.medicdate.Modelo.dataLogin
 import com.example.medicdate.Modelo.dataRegistro
+import com.example.medicdate.Modelo.dataCitaPaciente
+import com.example.medicdate.Modelo.dataDetalleCita
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -12,6 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 import com.example.medicdate.Modelo.dataExplorar
 import com.example.medicdate.Modelo.dataMedicosEspecialidad
+
 
 interface ApiService {
     @POST("login.php")
@@ -40,4 +43,15 @@ interface ApiService {
     suspend fun obtenerMedicosEspecialidad(
         @Query("idEspecialidad") idEspecialidad: Int
     ): dataMedicosEspecialidad
+
+    @GET("citas_paciente.php")
+    suspend fun obtenerCitasPaciente(
+        @Query("id_usuario") idUsuario: Int
+    ): List<dataCitaPaciente>
+
+    @GET("detalle_cita.php")
+    suspend fun obtenerDetalleCita(
+        @Query("id_cita") idCita: Int,
+        @Query("id_usuario") idUsuario: Int
+    ): dataDetalleCita
 }

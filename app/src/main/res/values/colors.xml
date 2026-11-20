@@ -7,4 +7,6 @@
     <color name="texto_secundario">#5B6672</color>
     <color name="borde">#8B98A7</color>
     <color name="rojo">#E94E44</color>
+    <color name="fondo_card">#F1F5FA</color>
+    <color name="fondo_chip">#DCE9F7</color>
 </resources>

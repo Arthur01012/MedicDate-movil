@@ -18,6 +18,9 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".Vista.MisCitasActivity"
+            android:exported="false" />
+        <activity
             android:name=".Vista.CuentaActivity"
             android:exported="false" />
         <activity
