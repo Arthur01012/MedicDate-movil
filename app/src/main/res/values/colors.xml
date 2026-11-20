@@ -14,4 +14,9 @@
     <color name="success_text">#16885D</color>
     <color name="error_background">#FCEBE9</color>
     <color name="error_text">#A83B32</color>
+    <color name="azul">#0B5FA5</color>
+    <color name="texto">#1A1A1A</color>
+    <color name="texto_secundario">#5B6672</color>
+    <color name="borde">#8B98A7</color>
+    <color name="rojo">#E94E44</color>
 </resources>

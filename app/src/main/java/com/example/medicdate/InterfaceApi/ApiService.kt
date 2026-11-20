@@ -1,0 +1,31 @@
+package com.example.medicdate.InterfaceApi
+
+import com.example.medicdate.Modelo.LoginRequest
+import com.example.medicdate.Modelo.dataCuenta
+import com.example.medicdate.Modelo.dataLogin
+import com.example.medicdate.Modelo.dataRegistro
+import retrofit2.http.Body
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Query
+
+interface ApiService {
+    @POST("login.php")
+    suspend fun iniciarSesion(@Body request: LoginRequest): dataLogin
+
+    @FormUrlEncoded
+    @POST("registro.php")
+    suspend fun registrarUsuario(
+        @Field("nombres") nombres: String,
+        @Field("apellidoPaterno") apellidoPaterno: String,
+        @Field("apellidoMaterno") apellidoMaterno: String,
+        @Field("correo") correo: String,
+        @Field("telefono") telefono: String,
+        @Field("clave") clave: String
+    ): dataRegistro
+
+    @GET("obtener_cuenta.php")
+    suspend fun obtenerCuenta(@Query("idUsuario") idUsuario: Int): dataCuenta
+}

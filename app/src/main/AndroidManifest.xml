@@ -16,6 +16,17 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Vista.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.CuentaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.RegistroActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
