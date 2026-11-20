@@ -34,6 +34,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".Vista.ExplorarActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".Vista.MedicosEspecialidadActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

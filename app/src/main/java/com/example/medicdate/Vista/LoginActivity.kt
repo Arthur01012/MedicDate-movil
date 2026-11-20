@@ -50,10 +50,11 @@ class LoginActivity : AppCompatActivity() {
     {
         startActivity(Intent(this, RegistroActivity::class.java))
     }
-    fun loginExitoso(idUsuario: Int)
+    fun loginExitoso(idUsuario: Int, idPaciente: Int)
     {
-        val intent = Intent(this, CuentaActivity::class.java)
+        val intent = Intent(this, ExplorarActivity::class.java)
         intent.putExtra("ID_USUARIO", idUsuario)
+        intent.putExtra("ID_PACIENTE", "idPaciente")
         startActivity(intent)
         finish()
     }

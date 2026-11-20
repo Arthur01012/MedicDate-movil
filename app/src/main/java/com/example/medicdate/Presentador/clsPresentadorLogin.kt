@@ -21,7 +21,7 @@ class clsPresentadorLogin(private val vista: LoginActivity) {
                 val respuesta = modelo.autenticarUsuario(correo, clave)
                 if (respuesta.exito)
                 {
-                    vista.loginExitoso(respuesta.idUsuario)
+                    vista.loginExitoso(respuesta.idUsuario, respuesta.idPaciente)
                 }
                 else
                 {
