@@ -46,15 +46,12 @@ class LoginActivity : AppCompatActivity() {
     {
         presenter.realizarLogin(txtCorreo.text.toString().trim(), txtClave.text.toString().trim())
     }
-
     fun ejecutarCrearCuenta(v: View)
     {
         startActivity(Intent(this, RegistroActivity::class.java))
     }
-
     fun loginExitoso(idUsuario: Int)
     {
-        // Por ahora abre Cuenta; despues sera la pantalla Explorar
         val intent = Intent(this, CuentaActivity::class.java)
         intent.putExtra("ID_USUARIO", idUsuario)
         startActivity(intent)
