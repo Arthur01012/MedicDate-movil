@@ -1,4 +1,4 @@
-package com.example.medicdate.Modelo
+package com.example.medicdate.Red
 
 import com.example.medicdate.InterfaceApi.ApiService
 import kotlinx.serialization.json.Json
