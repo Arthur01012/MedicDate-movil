@@ -13,8 +13,7 @@ class clsPresentadorLogin(private val vista: LoginActivity) {
     {
         if (correo.isEmpty() || clave.isEmpty())
         {
-            vista.mostrarError("Escribe tu correo y contraseña")
-            return
+            return vista.mostrarError("Escribe tu correo y contraseña")
         }
 
         CoroutineScope(Dispatchers.Main).launch {

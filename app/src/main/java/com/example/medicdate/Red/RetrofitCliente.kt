@@ -1,4 +1,4 @@
-package com.example.medicdate.Modelo
+package com.example.medicdate.Red
 
 import com.example.medicdate.InterfaceApi.ApiService
 import kotlinx.serialization.json.Json
@@ -7,13 +7,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 object RetrofitCliente {
-    private const val BASE_URL = "http://192.168.1.10/medicdate_api/"
+    private const val BASE_URL = "https://medicdate.innego.net/web/apis/movile/medicdate_api/"
     private val jsonConfig = Json {
         ignoreUnknownKeys = true
         coerceInputValues = true
         isLenient = true
     }
-
     val apiService: ApiService by lazy {
         val contenType = "application/json".toMediaType()
         Retrofit.Builder()

@@ -8,14 +8,12 @@ import kotlinx.coroutines.launch
 
 class clsPresentadorRegistro(private val vista: RegistroActivity) {
     private val modelo = clsRegistroModelo()
-
     fun crearCuenta(nombres: String, apellidoPaterno: String, apellidoMaterno: String, correo: String, telefono: String, clave: String)
     {
         // El apellido materno es opcional
         if (nombres.isEmpty() || apellidoPaterno.isEmpty() || correo.isEmpty() || telefono.isEmpty() || clave.isEmpty())
         {
-            vista.mostrarError("Completa todos los campos obligatorios")
-            return
+            return vista.mostrarError("Completa todos los campos obligatorios")
         }
 
         CoroutineScope(Dispatchers.Main).launch {

@@ -14,8 +14,7 @@ class clsPresentadorCuenta(private val vista: CuentaActivity) {
         // Si no llego el id, se regresa al login
         if (idUsuario == 0)
         {
-            vista.irALogin()
-            return
+            return vista.irALogin()
         }
 
         CoroutineScope(Dispatchers.Main).launch {
