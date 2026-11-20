@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:padding="20dp">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:navigationIcon="@drawable/ic_volver"
+        app:navigationIconTint="#252525"
+        app:title=""
+        app:navigationContentDescription="Regresar"/>
+
+    <TextView
+        android:id="@+id/txtEspecialidad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cardiología"
+        android:textColor="#252525"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="12dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Elige un médico para ver sus horarios."
+        android:textColor="#737373"
+        android:textSize="14sp"
+        android:layout_marginTop="5dp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMedicosEspecialidad"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="18dp"
+        android:nestedScrollingEnabled="false"/>
+
+</LinearLayout>
