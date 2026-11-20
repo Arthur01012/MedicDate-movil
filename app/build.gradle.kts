@@ -53,4 +53,7 @@ dependencies {
     // Kotlin Serialization: una sola versión
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    implementation("com.google.android.material:material:1.12.0")
+    implementation("androidx.recyclerview:recyclerview:1.4.0")
 }
