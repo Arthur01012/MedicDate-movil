@@ -1,4 +1,5 @@
 package com.example.medicdate.Modelo
+import com.example.medicdate.Red.RetrofitCliente
 
 class clsMedicosEspecialidadModelo {
 
