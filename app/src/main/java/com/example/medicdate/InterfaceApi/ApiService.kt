@@ -10,6 +10,8 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+import com.example.medicdate.Modelo.dataExplorar
+import com.example.medicdate.Modelo.dataMedicosEspecialidad
 
 interface ApiService {
     @POST("login.php")
@@ -28,4 +30,14 @@ interface ApiService {
 
     @GET("obtener_cuenta.php")
     suspend fun obtenerCuenta(@Query("idUsuario") idUsuario: Int): dataCuenta
+
+    @GET("explorar.php")
+    suspend fun obtenerExplorar(
+        @Query("idPaciente") idPaciente: Int
+    ): dataExplorar
+
+    @GET("medicos_especialidad.php")
+    suspend fun obtenerMedicosEspecialidad(
+        @Query("idEspecialidad") idEspecialidad: Int
+    ): dataMedicosEspecialidad
 }
