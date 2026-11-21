@@ -14,6 +14,8 @@ import com.example.medicdate.Modelo.dataExplorar
 import com.example.medicdate.Modelo.dataMedicosEspecialidad
 
 interface ApiService {
+    @POST("reservar_cita.php")
+    suspend fun reservarCita(@Body request: com.example.medicdate.Modelo.ReservaRequest): com.example.medicdate.Modelo.ReservaResponse
     @POST("login.php")
     suspend fun iniciarSesion(@Body request: LoginRequest): dataLogin
 
