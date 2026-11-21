@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicdate.Adaptador.EspecialidadAdapter
 import com.example.medicdate.Modelo.Especialidad
 import com.example.medicdate.Modelo.MedicoExplorar
 import com.example.medicdate.Modelo.ProximaCita

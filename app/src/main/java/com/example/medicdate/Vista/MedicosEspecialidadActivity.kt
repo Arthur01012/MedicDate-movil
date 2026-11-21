@@ -9,6 +9,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicdate.Adaptador.MedicoEspecialidadAdapter
 import com.example.medicdate.Modelo.MedicoEspecialidad
 import com.example.medicdate.Presentador.clsPresentadorMedicosEspecialidad
 import com.example.medicdate.R

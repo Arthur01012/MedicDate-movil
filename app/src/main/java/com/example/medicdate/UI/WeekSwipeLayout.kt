@@ -1,4 +1,4 @@
-package com.example.medicdate.Vista
+package com.example.medicdate.UI
 
 import android.content.Context
 import android.util.AttributeSet
