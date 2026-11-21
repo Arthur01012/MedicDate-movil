@@ -12,7 +12,10 @@ import com.example.medicdate.R
 import com.google.android.material.button.MaterialButton
 
 class ConfirmarCitaActivity : AppCompatActivity() {
-
+    private lateinit var presenter: clsPresentadorConfirmarCita
+    private var doctorId = -1
+    private var tipoAtencionId = -1
+    private lateinit var fechaHora: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
