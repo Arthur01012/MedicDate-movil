@@ -1,4 +1,4 @@
-package com.example.medicdate.Vista
+package com.example.medicdate.Adaptador
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medicdate.Modelo.MedicoExplorar
 import com.example.medicdate.R
-import java.util.Locale
 
 class MedicoExplorarAdapter(
     private var lista: List<MedicoExplorar>,

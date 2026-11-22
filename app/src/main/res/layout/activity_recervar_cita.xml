@@ -197,7 +197,7 @@
             </LinearLayout>
 
             <com.example.medicdate.UI.WeekSwipeLayout
-                android:id="@+id/group_dates"
+                android:id="@+id/WeekSwipeLayout"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_marginTop="8dp"
@@ -382,6 +382,12 @@
                 android:textColor="@color/text_primary"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHorarios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
 
             <GridLayout
                 android:id="@+id/group_times"

@@ -1,5 +1,6 @@
 package com.example.medicdate.Vista
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
@@ -41,23 +42,18 @@ class MedicosEspecialidadActivity : AppCompatActivity() {
             finish()
         }
 
-        adapter = MedicoEspecialidadAdapter(emptyList(), "") { medico ->
-            val textoHorario = medico.proximoHorario?.let {
-                "${it.fecha} a las ${it.hora}"
-            } ?: "Sin horario disponible"
+        val idEspecialidad = intent.getIntExtra("ID_ESPECIALIDAD", 0)
+        val nombreEspecialidad = intent.getStringExtra("NOMBRE_ESPECIALIDAD").orEmpty()
 
-            Toast.makeText(
-                this,
-                "${medico.nombre} — $textoHorario",
-                Toast.LENGTH_SHORT
-            ).show()
+        adapter = MedicoEspecialidadAdapter(emptyList(), "") { medico ->
+            val intent = Intent(this, RecervarCitaActivity::class.java)
+            intent.putExtra("doctorId", medico.idEmpleado)
+            intent.putExtra("tipoAtencionId", if (idEspecialidad != 0) idEspecialidad else 1)
+            startActivity(intent)
         }
 
         rvMedicosEspecialidad.layoutManager = LinearLayoutManager(this)
         rvMedicosEspecialidad.adapter = adapter
-
-        val idEspecialidad = intent.getIntExtra("ID_ESPECIALIDAD", 0)
-        val nombreEspecialidad = intent.getStringExtra("NOMBRE_ESPECIALIDAD").orEmpty()
 
         presenter = clsPresentadorMedicosEspecialidad(this)
         presenter.cargarMedicos(idEspecialidad, nombreEspecialidad)

@@ -1,8 +1,16 @@
 package com.example.medicdate.InterfaceApi
 
+import com.example.medicdate.Modelo.CitaPaciente
+import com.example.medicdate.Modelo.DetalleCita
+import com.example.medicdate.Modelo.DisponibilidadRequest
+import com.example.medicdate.Modelo.DisponibilidadResponse
 import com.example.medicdate.Modelo.LoginRequest
+import com.example.medicdate.Modelo.ReservaRequest
+import com.example.medicdate.Modelo.ReservaResponse
 import com.example.medicdate.Modelo.dataCuenta
+import com.example.medicdate.Modelo.dataExplorar
 import com.example.medicdate.Modelo.dataLogin
+import com.example.medicdate.Modelo.dataMedicosEspecialidad
 import com.example.medicdate.Modelo.dataRegistro
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -10,16 +18,17 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
-import com.example.medicdate.Modelo.dataExplorar
-import com.example.medicdate.Modelo.dataMedicosEspecialidad
 
 interface ApiService {
     @POST("reservar_cita.php")
-    suspend fun reservarCita(@Body request: com.example.medicdate.Modelo.ReservaRequest): com.example.medicdate.Modelo.ReservaResponse
-    @POST("Disponibilidad.php")
-    suspend fun obtenerDisponibilidad(@Body request: com.example.medicdate.Modelo.DisponibilidadRequest): com.example.medicdate.Modelo.DisponibilidadResponse
-    @POST("reservar_cita.php")
-    suspend fun reservarCita(@Body request: com.example.medicdate.Modelo.ReservaRequest): com.example.medicdate.Modelo.ReservaResponse
+    suspend fun reservarCita(@Body request: ReservaRequest): ReservaResponse
+
+    @POST("disponibilidad.php")
+    suspend fun obtenerDisponibilidad(@Body request: DisponibilidadRequest): DisponibilidadResponse
+
+    @GET("disponibilidad.php")
+    suspend fun obtenerDisponibilidadGet(@Query("datos") datosJson: String): DisponibilidadResponse
+
     @POST("login.php")
     suspend fun iniciarSesion(@Body request: LoginRequest): dataLogin
 
@@ -46,4 +55,15 @@ interface ApiService {
     suspend fun obtenerMedicosEspecialidad(
         @Query("idEspecialidad") idEspecialidad: Int
     ): dataMedicosEspecialidad
+
+    @GET("citas_paciente.php")
+    suspend fun obtenerCitasPaciente(
+        @Query("id_usuario") idUsuario: Int
+    ): List<CitaPaciente>
+
+    @GET("detalle_cita.php")
+    suspend fun obtenerDetalleCita(
+        @Query("id_cita") idCita: Int,
+        @Query("id_usuario") idUsuario: Int
+    ): DetalleCita
 }
