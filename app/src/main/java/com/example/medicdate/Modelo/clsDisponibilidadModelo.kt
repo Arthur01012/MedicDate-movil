@@ -28,6 +28,7 @@ data class DisponibilidadResponse(
     @SerialName("tipo_atencion") val tipo_atencion: String? = null,
     @SerialName("especialidad") val especialidad: String? = null,
     @SerialName("duracion_minutos") val duracion_minutos: Int = 0,
+    @SerialName("dias_atencion") val dias_atencion: List<Int> = emptyList(),
     @SerialName("horarios") val horarios: List<Horario> = emptyList()
 )
 

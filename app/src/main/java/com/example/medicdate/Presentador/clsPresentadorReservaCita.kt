@@ -21,7 +21,7 @@ class clsPresentadorReservaCita(private val vista: RecervarCitaActivity) {
                 )
                 val respuesta = modelo.obtenerDisponibilidad(request)
                 if (respuesta.exito) {
-                    vista.mostrarHorarios(respuesta.horarios)
+                    vista.mostrarHorarios(respuesta.horarios, respuesta.dias_atencion)
                 } else {
                     vista.mostrarError(respuesta.mensaje ?: "Error al cargar disponibilidad")
                 }

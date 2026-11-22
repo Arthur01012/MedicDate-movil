@@ -200,8 +200,12 @@ class RecervarCitaActivity : AppCompatActivity() {
         presenter.cargarDisponibilidad(doctorId, tipoAtencionId, selectedDate, usrId)
     }
 
-    fun mostrarHorarios(horarios: List<Horario>) {
+    fun mostrarHorarios(horarios: List<Horario>, diasAtencion: List<Int> = emptyList()) {
         stopSkeletonAnimation()
+        if (diasAtencion.isNotEmpty()) {
+            weekSwipe.setDoctorWorkingDays(diasAtencion.toSet())
+            actualizarEtiquetaSemana()
+        }
         (rvHorarios.adapter as HorarioAdapter).updateData(horarios)
         if (horarios.isEmpty()) {
             summaryText.text = "No hay horarios disponibles para esta fecha"

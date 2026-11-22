@@ -27,6 +27,7 @@ class WeekSwipeLayout @JvmOverloads constructor(
     private val selectedCalendar: Calendar = Calendar.getInstance()
     private val todayCalendar: Calendar = Calendar.getInstance()
 
+    private var doctorWorkingDays: Set<Int> = emptySet()
     private var onDateChangeListener: ((String) -> Unit)? = null
     var onWeekSwipe: ((Int) -> Unit)? = null
 
@@ -52,15 +53,32 @@ class WeekSwipeLayout @JvmOverloads constructor(
         findAndSetFirstValidDateInWeek()
     }
 
+    fun setDoctorWorkingDays(days: Set<Int>) {
+        if (doctorWorkingDays != days) {
+            doctorWorkingDays = days
+            findAndSetFirstValidDateInWeek()
+            updateWeekUi()
+        }
+    }
+
+    private fun isDoctorWorkingDay(cal: Calendar): Boolean {
+        if (doctorWorkingDays.isEmpty()) {
+            val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
+            return dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY
+        }
+        val calDay = cal.get(Calendar.DAY_OF_WEEK)
+        val isoDay = if (calDay == Calendar.SUNDAY) 7 else calDay - 1
+        return doctorWorkingDays.contains(isoDay)
+    }
+
     private fun findAndSetFirstValidDateInWeek() {
         val temp = mondayCalendar.clone() as Calendar
         var found = false
         for (i in 0..6) {
-            val dayOfWeek = temp.get(Calendar.DAY_OF_WEEK)
-            val isWeekday = dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY
+            val isWorking = isDoctorWorkingDay(temp)
             val isFuture = temp.after(todayCalendar)
 
-            if (isFuture && isWeekday) {
+            if (isFuture && isWorking) {
                 selectedCalendar.time = temp.time
                 found = true
                 break
@@ -95,11 +113,10 @@ class WeekSwipeLayout @JvmOverloads constructor(
         val temp = mondayCalendar.clone() as Calendar
         temp.add(Calendar.DAY_OF_YEAR, dayIndex)
 
-        val dayOfWeek = temp.get(Calendar.DAY_OF_WEEK)
-        val isWeekday = dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY
+        val isWorking = isDoctorWorkingDay(temp)
         val isFuture = temp.after(todayCalendar)
 
-        if (!isFuture || !isWeekday) {
+        if (!isFuture || !isWorking) {
             return
         }
 
@@ -149,10 +166,9 @@ class WeekSwipeLayout @JvmOverloads constructor(
             val dayDateStr = apiDateFormat.format(tempCal.time)
             val isSelected = dayDateStr == selectedDateStr
 
-            val dayOfWeek = tempCal.get(Calendar.DAY_OF_WEEK)
-            val isWeekday = dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY
+            val isWorking = isDoctorWorkingDay(tempCal)
             val isFuture = tempCal.after(todayCalendar)
-            val isValidDate = isFuture && isWeekday
+            val isValidDate = isFuture && isWorking
 
             if (child is LinearLayout && child.childCount >= 2) {
                 val tvDayName = child.getChildAt(0) as? TextView
