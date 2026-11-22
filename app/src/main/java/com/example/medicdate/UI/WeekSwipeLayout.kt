@@ -87,10 +87,16 @@ class WeekSwipeLayout @JvmOverloads constructor(
         }
 
         if (!found) {
-            val nextWeek = mondayCalendar.clone() as Calendar
-            nextWeek.add(Calendar.WEEK_OF_YEAR, 1)
-            selectedCalendar.time = nextWeek.time
+            mondayCalendar.add(Calendar.WEEK_OF_YEAR, 1)
+            mondayCalendar.firstDayOfWeek = Calendar.MONDAY
+            mondayCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+            findAndSetFirstValidDateInWeek()
+            return
         }
+
+        mondayCalendar.time = selectedCalendar.time
+        mondayCalendar.firstDayOfWeek = Calendar.MONDAY
+        mondayCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
     }
 
     override fun onFinishInflate() {
