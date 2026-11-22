@@ -15,6 +15,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.medicdate.Adaptador.EspecialidadAdapter
+import com.example.medicdate.Adaptador.MedicoExplorarAdapter
 import com.example.medicdate.Modelo.Especialidad
 import com.example.medicdate.Modelo.MedicoExplorar
 import com.example.medicdate.Modelo.ProximaCita
@@ -81,11 +83,12 @@ class ExplorarActivity : AppCompatActivity() {
         rvEspecialidades.adapter = especialidadAdapter
 
         medicoAdapter = MedicoExplorarAdapter(emptyList()) { medico ->
-            Toast.makeText(
-                this,
-                "${medico.nombre} — ${medico.especialidades}",
-                Toast.LENGTH_SHORT
-            ).show()
+            val intent = Intent(this, RecervarCitaActivity::class.java)
+            intent.putExtra("doctorId", medico.idEmpleado)
+            intent.putExtra("doctorName", medico.nombre)
+            intent.putExtra("doctorSpecialty", medico.especialidades)
+            intent.putExtra("tipoAtencionId", 1)
+            startActivity(intent)
         }
         rvMedicos.layoutManager = LinearLayoutManager(this)
         rvMedicos.adapter = medicoAdapter

@@ -1,4 +1,4 @@
-package com.example.medicdate.Vista
+package com.example.medicdate.Adaptador
 
 import android.view.LayoutInflater
 import android.view.View
