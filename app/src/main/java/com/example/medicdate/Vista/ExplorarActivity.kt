@@ -85,6 +85,8 @@ class ExplorarActivity : AppCompatActivity() {
         medicoAdapter = MedicoExplorarAdapter(emptyList()) { medico ->
             val intent = Intent(this, RecervarCitaActivity::class.java)
             intent.putExtra("doctorId", medico.idEmpleado)
+            intent.putExtra("doctorName", medico.nombre)
+            intent.putExtra("doctorSpecialty", medico.especialidades)
             intent.putExtra("tipoAtencionId", 1)
             startActivity(intent)
         }

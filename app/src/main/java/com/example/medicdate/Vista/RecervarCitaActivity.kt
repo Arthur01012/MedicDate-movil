@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
+import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -21,15 +22,17 @@ import com.example.medicdate.Modelo.Horario
 import com.example.medicdate.Presentador.clsPresentadorReservaCita
 import com.example.medicdate.R
 import com.example.medicdate.UI.WeekSwipeLayout
+import com.example.medicdate.Util.SessionManager
 import com.google.android.material.button.MaterialButton
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 class RecervarCitaActivity : AppCompatActivity() {
     private lateinit var presenter: clsPresentadorReservaCita
-    private var doctorId: Int = -1
+    private var doctorId: Int = 2
     private var tipoAtencionId: Int = 1
     private var doctorName: String = "Dra. Laura Méndez"
+    private var doctorSpecialty: String = "Cardiología"
 
     private lateinit var weekSwipe: WeekSwipeLayout
     private lateinit var weekLabel: TextView
@@ -53,8 +56,22 @@ class RecervarCitaActivity : AppCompatActivity() {
             insets
         }
 
+        SessionManager.init(this)
+
         presenter = clsPresentadorReservaCita(this)
-        doctorId = intent.getIntExtra("doctorId", -1)
+        val passedDoctorId = intent.getIntExtra("doctorId", -1)
+        if (passedDoctorId != -1) doctorId = passedDoctorId
+
+        val passedName = intent.getStringExtra("doctorName")
+        if (!passedName.isNullOrEmpty()) {
+            doctorName = passedName
+        }
+
+        val passedSpec = intent.getStringExtra("doctorSpecialty")
+        if (!passedSpec.isNullOrEmpty()) {
+            doctorSpecialty = passedSpec
+        }
+
         val tipoExtra = intent.getIntExtra("tipoAtencionId", 1)
         if (tipoExtra != -1) tipoAtencionId = tipoExtra
 
@@ -69,6 +86,14 @@ class RecervarCitaActivity : AppCompatActivity() {
     private fun inicializarVistas() {
         findViewById<View>(R.id.button_back).setOnClickListener { finish() }
 
+        val txtInitials = findViewById<TextView>(R.id.txtDoctorInitials)
+        val txtName = findViewById<TextView>(R.id.txtDoctorName)
+        val txtSpecialty = findViewById<TextView>(R.id.txtDoctorSpecialtyLocation)
+
+        if (txtInitials != null) txtInitials.text = generarIniciales(doctorName)
+        if (txtName != null) txtName.text = doctorName
+        if (txtSpecialty != null) txtSpecialty.text = "$doctorSpecialty · Consultorio"
+
         weekSwipe = findViewById(R.id.WeekSwipeLayout)
         weekLabel = findViewById(R.id.week_label)
         rvHorarios = findViewById(R.id.rvHorarios)
@@ -78,9 +103,12 @@ class RecervarCitaActivity : AppCompatActivity() {
         summaryText = findViewById(R.id.selected_appointment_summary)
         btnContinue = findViewById(R.id.button_continue)
 
-        // Hide static times grid and use RecyclerView
         groupTimes.visibility = View.GONE
-        rvHorarios.visibility = View.VISIBLE
+        rvHorarios.visibility = View.GONE
+        skeletonLoading.visibility = View.VISIBLE
+
+        actualizarSombreadoTipoAtencion(radioGroupTipo.checkedRadioButtonId)
+
         rvHorarios.layoutManager = GridLayoutManager(this, 3)
         rvHorarios.adapter = HorarioAdapter(emptyList()) { horario ->
             seleccionarHorario(horario)
@@ -112,6 +140,7 @@ class RecervarCitaActivity : AppCompatActivity() {
 
         radioGroupTipo.setOnCheckedChangeListener { _, checkedId ->
             tipoAtencionId = if (checkedId == R.id.radio_follow_up) 2 else 1
+            actualizarSombreadoTipoAtencion(checkedId)
             selectedHorario = null
             actualizarResumen()
             cargarDisponibilidad()
@@ -120,7 +149,7 @@ class RecervarCitaActivity : AppCompatActivity() {
         btnContinue.setOnClickListener {
             val horario = selectedHorario
             if (horario == null) {
-                mostrarError("Por favor selecciona un horario disponible")
+                Toast.makeText(this, "Por favor selecciona un horario disponible", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -139,14 +168,36 @@ class RecervarCitaActivity : AppCompatActivity() {
         }
     }
 
+    private fun actualizarSombreadoTipoAtencion(checkedId: Int) {
+        val radioFirst = findViewById<RadioButton>(R.id.radio_first_visit)
+        val radioFollow = findViewById<RadioButton>(R.id.radio_follow_up)
+        if (radioFirst != null && radioFollow != null) {
+            if (checkedId == R.id.radio_follow_up) {
+                radioFirst.setBackgroundResource(R.drawable.bg_option_default)
+                radioFollow.setBackgroundResource(R.drawable.bg_option_selected)
+            } else {
+                radioFirst.setBackgroundResource(R.drawable.bg_option_selected)
+                radioFollow.setBackgroundResource(R.drawable.bg_option_default)
+            }
+        }
+    }
+
+    private fun generarIniciales(nombre: String): String {
+        val partes = nombre.trim().split("\\s+".toRegex()).filter { it.isNotEmpty() }
+        if (partes.isEmpty()) return "MD"
+        val primera = partes.first().first().uppercaseChar()
+        val segunda = if (partes.size > 1) partes.last().first().uppercaseChar() else null
+        return if (segunda != null) "$primera$segunda" else "$primera"
+    }
+
     private fun actualizarEtiquetaSemana() {
         weekLabel.text = weekSwipe.getWeekRangeLabel()
     }
 
     private fun cargarDisponibilidad() {
         startSkeletonAnimation()
-        val docId = if (doctorId != -1) doctorId else null
-        presenter.cargarDisponibilidad(docId, tipoAtencionId, selectedDate)
+        val usrId = if (SessionManager.usuarioId != -1) SessionManager.usuarioId else null
+        presenter.cargarDisponibilidad(doctorId, tipoAtencionId, selectedDate, usrId)
     }
 
     fun mostrarHorarios(horarios: List<Horario>) {
@@ -159,14 +210,14 @@ class RecervarCitaActivity : AppCompatActivity() {
 
     fun mostrarError(msg: String) {
         stopSkeletonAnimation()
-        Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+        summaryText.text = msg
     }
 
     private fun startSkeletonAnimation() {
         skeletonLoading.visibility = View.VISIBLE
         rvHorarios.visibility = View.GONE
-        val anim = AlphaAnimation(0.2f, 0.8f).apply {
-            duration = 500
+        val anim = AlphaAnimation(0.25f, 0.85f).apply {
+            duration = 450
             repeatMode = Animation.REVERSE
             repeatCount = Animation.INFINITE
         }
@@ -225,25 +276,26 @@ class RecervarCitaActivity : AppCompatActivity() {
                 val disponible = horario.disponible
 
                 if (!disponible) {
-                    view.alpha = 0.45f
+                    view.alpha = 0.35f
                     view.isEnabled = false
                     btnSelect.isEnabled = false
+                    tvHora.setTextColor(ContextCompat.getColor(view.context, R.color.text_secondary))
+                    view.setBackgroundResource(R.drawable.bg_time_default)
+                    view.setOnClickListener(null)
                 } else {
                     view.alpha = 1.0f
                     view.isEnabled = true
                     btnSelect.isEnabled = true
-                }
 
-                if (isSelected) {
-                    tvHora.setTextColor(ContextCompat.getColor(view.context, R.color.on_brand))
-                    view.setBackgroundResource(R.drawable.bg_time_selected)
-                } else {
-                    tvHora.setTextColor(ContextCompat.getColor(view.context, R.color.text_primary))
-                    view.setBackgroundResource(R.drawable.bg_time_default)
-                }
+                    if (isSelected) {
+                        tvHora.setTextColor(ContextCompat.getColor(view.context, R.color.on_brand))
+                        view.setBackgroundResource(R.drawable.bg_time_selected)
+                    } else {
+                        tvHora.setTextColor(ContextCompat.getColor(view.context, R.color.text_primary))
+                        view.setBackgroundResource(R.drawable.bg_time_default)
+                    }
 
-                view.setOnClickListener {
-                    if (disponible) {
+                    view.setOnClickListener {
                         val prev = selectedPosition
                         selectedPosition = bindingAdapterPosition
                         if (prev != RecyclerView.NO_POSITION) notifyItemChanged(prev)

@@ -48,6 +48,8 @@ class MedicosEspecialidadActivity : AppCompatActivity() {
         adapter = MedicoEspecialidadAdapter(emptyList(), "") { medico ->
             val intent = Intent(this, RecervarCitaActivity::class.java)
             intent.putExtra("doctorId", medico.idEmpleado)
+            intent.putExtra("doctorName", medico.nombre)
+            intent.putExtra("doctorSpecialty", nombreEspecialidad)
             intent.putExtra("tipoAtencionId", if (idEspecialidad != 0) idEspecialidad else 1)
             startActivity(intent)
         }

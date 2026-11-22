@@ -9,12 +9,13 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 
-// Request for availability (date, doctor, specialty)
+// Request for availability (date, doctor, specialty, user)
 @Serializable
 data class DisponibilidadRequest(
     @SerialName("id_empleado") val id_empleado: Int?,
     @SerialName("id_tipo_atencion") val id_tipo_atencion: Int,
-    @SerialName("fecha") val fecha: String // format YYYY-MM-DD
+    @SerialName("fecha") val fecha: String, // format YYYY-MM-DD
+    @SerialName("id_usuario") val id_usuario: Int? = null
 )
 
 // Response containing a list of time slots (horario) and doctor info
