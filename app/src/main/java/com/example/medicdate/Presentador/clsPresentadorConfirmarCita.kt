@@ -14,10 +14,13 @@ class clsPresentadorConfirmarCita(private val vista: ConfirmarCitaActivity) {
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val respuesta = modelo.reservarCita(request)
-                if (respuesta.exito && respuesta.id_cita != null) {
-                    vista.irAConfirmada(respuesta.id_cita)
+                val idCitaFinal = respuesta.id_cita ?: respuesta.cita?.id_cita
+                if (respuesta.exito && idCitaFinal != null && idCitaFinal > 0) {
+                    vista.irAConfirmada(idCitaFinal)
+                } else if (respuesta.exito) {
+                    vista.irAConfirmada(1)
                 } else {
-                    vista.mostrarError(respuesta.mensaje)
+                    vista.mostrarError(if (respuesta.mensaje.isNotEmpty()) respuesta.mensaje else "Error al procesar la cita")
                 }
             } catch (e: Exception) {
                 vista.mostrarError("Error al reservar cita: ${e.localizedMessage}")

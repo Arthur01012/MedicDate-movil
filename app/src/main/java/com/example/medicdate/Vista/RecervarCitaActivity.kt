@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AlphaAnimation
+import android.view.animation.Animation
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
@@ -32,6 +34,7 @@ class RecervarCitaActivity : AppCompatActivity() {
     private lateinit var weekSwipe: WeekSwipeLayout
     private lateinit var weekLabel: TextView
     private lateinit var rvHorarios: RecyclerView
+    private lateinit var skeletonLoading: View
     private lateinit var groupTimes: View
     private lateinit var radioGroupTipo: RadioGroup
     private lateinit var summaryText: TextView
@@ -69,6 +72,7 @@ class RecervarCitaActivity : AppCompatActivity() {
         weekSwipe = findViewById(R.id.WeekSwipeLayout)
         weekLabel = findViewById(R.id.week_label)
         rvHorarios = findViewById(R.id.rvHorarios)
+        skeletonLoading = findViewById<View>(R.id.skeleton_loading)
         groupTimes = findViewById(R.id.group_times)
         radioGroupTipo = findViewById(R.id.group_appointment_type)
         summaryText = findViewById(R.id.selected_appointment_summary)
@@ -140,11 +144,13 @@ class RecervarCitaActivity : AppCompatActivity() {
     }
 
     private fun cargarDisponibilidad() {
+        startSkeletonAnimation()
         val docId = if (doctorId != -1) doctorId else null
         presenter.cargarDisponibilidad(docId, tipoAtencionId, selectedDate)
     }
 
     fun mostrarHorarios(horarios: List<Horario>) {
+        stopSkeletonAnimation()
         (rvHorarios.adapter as HorarioAdapter).updateData(horarios)
         if (horarios.isEmpty()) {
             summaryText.text = "No hay horarios disponibles para esta fecha"
@@ -152,7 +158,25 @@ class RecervarCitaActivity : AppCompatActivity() {
     }
 
     fun mostrarError(msg: String) {
+        stopSkeletonAnimation()
         Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
+    }
+
+    private fun startSkeletonAnimation() {
+        skeletonLoading.visibility = View.VISIBLE
+        rvHorarios.visibility = View.GONE
+        val anim = AlphaAnimation(0.2f, 0.8f).apply {
+            duration = 500
+            repeatMode = Animation.REVERSE
+            repeatCount = Animation.INFINITE
+        }
+        skeletonLoading.startAnimation(anim)
+    }
+
+    private fun stopSkeletonAnimation() {
+        skeletonLoading.clearAnimation()
+        skeletonLoading.visibility = View.GONE
+        rvHorarios.visibility = View.VISIBLE
     }
 
     private fun seleccionarHorario(horario: Horario) {

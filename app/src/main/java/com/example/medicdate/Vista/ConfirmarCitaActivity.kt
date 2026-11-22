@@ -35,6 +35,8 @@ class ConfirmarCitaActivity : AppCompatActivity() {
             insets
         }
 
+        SessionManager.init(this)
+
         presenter = clsPresentadorConfirmarCita(this)
         doctorId = intent.getIntExtra("doctorId", -1)
         tipoAtencionId = intent.getIntExtra("tipoAtencionId", -1)
@@ -53,9 +55,16 @@ class ConfirmarCitaActivity : AppCompatActivity() {
     }
 
     private fun confirmar() {
-        val usuarioId = if (SessionManager.usuarioId != -1) SessionManager.usuarioId else 1
+        val currentUsuarioId = SessionManager.usuarioId
+        if (currentUsuarioId == -1) {
+            mostrarError("Debes iniciar sesión para confirmar una cita.")
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            return
+        }
+
         val request = ReservaRequest(
-            id_usuario = usuarioId,
+            id_usuario = currentUsuarioId,
             id_empleado = if (doctorId != -1) doctorId else null,
             id_tipo_atencion = if (tipoAtencionId != -1) tipoAtencionId else 1,
             inicio = fechaHora
@@ -68,8 +77,12 @@ class ConfirmarCitaActivity : AppCompatActivity() {
     }
 
     fun irAConfirmada(idCita: Int) {
-        val i = Intent(this, CitaConfirmadaActivity::class.java)
-        i.putExtra("idCita", idCita)
+        val i = Intent(this, CitaConfirmadaActivity::class.java).apply {
+            putExtra("idCita", idCita)
+            putExtra("doctorName", doctorName)
+            putExtra("tipoAtencionNombre", tipoAtencionNombre)
+            putExtra("fechaHora", fechaHora)
+        }
         startActivity(i)
         finish()
     }
