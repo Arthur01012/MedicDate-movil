@@ -13,6 +13,8 @@ import com.example.medicdate.Modelo.dataExplorar
 import com.example.medicdate.Modelo.dataLogin
 import com.example.medicdate.Modelo.dataMedicosEspecialidad
 import com.example.medicdate.Modelo.dataRegistro
+import com.example.medicdate.Modelo.DatosPersonalesRequest
+import com.example.medicdate.Modelo.dataGuardarDatosPersonales
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -47,6 +49,9 @@ interface ApiService {
     @GET("obtener_cuenta.php")
     suspend fun obtenerCuenta(@Query("idUsuario") idUsuario: Int): dataCuenta
 
+    @POST("actualizar_datos_personales.php")
+    suspend fun actualizarDatosPersonales(@Body request: DatosPersonalesRequest): dataGuardarDatosPersonales
+
     @GET("explorar.php")
     suspend fun obtenerExplorar(
         @Query("idPaciente") idPaciente: Int
@@ -69,5 +74,5 @@ interface ApiService {
     ): DetalleCita
 
     @GET("datos_personales.php")
-    suspend fun obtenerDatosPersonales(@Query("idUsuario") idUsuario: Int): dataDatosPersonales
+    suspend fun obtenerDatosPersonales(@Query("idUsuario") idUsuario: Int, @Query("t") t: Long): dataDatosPersonales
 }
