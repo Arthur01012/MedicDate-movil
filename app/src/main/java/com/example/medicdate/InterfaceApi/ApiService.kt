@@ -8,6 +8,7 @@ import com.example.medicdate.Modelo.LoginRequest
 import com.example.medicdate.Modelo.ReservaRequest
 import com.example.medicdate.Modelo.ReservaResponse
 import com.example.medicdate.Modelo.dataCuenta
+import com.example.medicdate.Modelo.dataDatosPersonales
 import com.example.medicdate.Modelo.dataExplorar
 import com.example.medicdate.Modelo.dataLogin
 import com.example.medicdate.Modelo.dataMedicosEspecialidad
@@ -66,4 +67,7 @@ interface ApiService {
         @Query("id_cita") idCita: Int,
         @Query("id_usuario") idUsuario: Int
     ): DetalleCita
+
+    @GET("datos_personales.php")
+    suspend fun obtenerDatosPersonales(@Query("idUsuario") idUsuario: Int): dataDatosPersonales
 }
