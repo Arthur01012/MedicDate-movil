@@ -42,8 +42,21 @@ class MisCitasActivity : AppCompatActivity() {
 
         presenter = clsPresentadorMisCitas(this)
 
-        txtProximas.setOnClickListener(this::ejecutarProximas)
-        txtHistorial.setOnClickListener(this::ejecutarHistorial)
+        configurarListeners()
+    }
+
+    private fun configurarListeners()
+    {
+        txtProximas.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                presenter.mostrarProximas()
+            }
+        })
+        txtHistorial.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                presenter.mostrarHistorial()
+            }
+        })
     }
 
     override fun onStart() {
@@ -51,22 +64,12 @@ class MisCitasActivity : AppCompatActivity() {
         presenter.cargarCitas(intent.getIntExtra("ID_USUARIO", 0))
     }
 
-    fun ejecutarProximas(v: View)
-    {
-        presenter.mostrarProximas()
-    }
-
-    fun ejecutarHistorial(v: View)
-    {
-        presenter.mostrarHistorial()
-    }
-
     fun marcarPestana(proximas: Boolean)
     {
         val azul = ContextCompat.getColor(this, R.color.azul)
         val gris = ContextCompat.getColor(this, R.color.texto_secundario)
         txtProximas.setBackgroundResource(if (proximas) R.drawable.bg_input else R.drawable.bg_card)
-        txtHistorial.setBackgroundResource(if (proximas) R.drawable.ic_volver else R.drawable.bg_input)
+        txtHistorial.setBackgroundResource(if (proximas) R.drawable.bg_card else R.drawable.bg_input)
         txtProximas.setTextColor(if (proximas) azul else gris)
         txtHistorial.setTextColor(if (proximas) gris else azul)
     }
@@ -75,7 +78,7 @@ class MisCitasActivity : AppCompatActivity() {
     {
         txtVacio.visibility = View.GONE
         rvCitas.visibility = View.VISIBLE
-        rvCitas.adapter = CitasAdaptador(lista)
+        rvCitas.adapter = CitasAdaptador(this, lista)
     }
 
     fun mostrarVacio(mensaje: String)
@@ -83,6 +86,19 @@ class MisCitasActivity : AppCompatActivity() {
         rvCitas.visibility = View.GONE
         txtVacio.text = mensaje
         txtVacio.visibility = View.VISIBLE
+    }
+
+    fun verDetalleCita(cita: dataCitaPaciente)
+    {
+        presenter.verDetalleCita(cita)
+    }
+
+    fun abrirDetalleCita(idCita: Int, idUsuario: Int)
+    {
+        val intent = Intent(this, DetalleCitaActivity::class.java)
+        intent.putExtra("ID_CITA", idCita)
+        intent.putExtra("ID_USUARIO", idUsuario)
+        startActivity(intent)
     }
 
     fun irALogin()

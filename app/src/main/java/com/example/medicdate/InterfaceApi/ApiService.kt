@@ -6,6 +6,7 @@ import com.example.medicdate.Modelo.dataLogin
 import com.example.medicdate.Modelo.dataRegistro
 import com.example.medicdate.Modelo.dataCitaPaciente
 import com.example.medicdate.Modelo.dataDetalleCita
+import com.example.medicdate.Modelo.dataCancelarCita
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -54,4 +55,11 @@ interface ApiService {
         @Query("id_cita") idCita: Int,
         @Query("id_usuario") idUsuario: Int
     ): dataDetalleCita
+
+    @FormUrlEncoded
+    @POST("cancelar_cita.php")
+    suspend fun cancelarCita(
+        @Field("id_cita") idCita: Int,
+        @Field("id_usuario") idUsuario: Int
+    ): dataCancelarCita
 }

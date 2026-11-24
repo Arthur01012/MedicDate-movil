@@ -10,4 +10,8 @@ class clsMisCitasModelo {
     suspend fun obtenerDetalle(idCita: Int, idUsuario: Int): dataDetalleCita {
         return RetrofitCliente.apiService.obtenerDetalleCita(idCita, idUsuario)
     }
+
+    suspend fun cancelarCita(idCita: Int, idUsuario: Int): dataCancelarCita {
+        return RetrofitCliente.apiService.cancelarCita(idCita, idUsuario)
+    }
 }

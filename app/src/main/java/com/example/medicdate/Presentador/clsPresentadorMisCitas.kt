@@ -10,24 +10,31 @@ import kotlinx.coroutines.launch
 class clsPresentadorMisCitas(private val vista: MisCitasActivity) {
     private val modelo = clsMisCitasModelo()
     private var citas: List<dataCitaPaciente> = emptyList()
+    private var idUsuario = 0
 
-    fun cargarCitas(idUsuario: Int)
+    fun cargarCitas(id: Int)
     {
+        idUsuario = id
         // Si no llego el id, se regresa al login
-        if (idUsuario == 0)
+        if (id == 0)
         {
             return vista.irALogin()
         }
 
         CoroutineScope(Dispatchers.Main).launch {
             try {
-                citas = modelo.obtenerCitas(idUsuario)
+                citas = modelo.obtenerCitas(id)
                 mostrarProximas()
             } catch (e: Exception)
             {
                 vista.mostrarError("Error al cargar las citas: " + e.localizedMessage)
             }
         }
+    }
+
+    fun verDetalleCita(cita: dataCitaPaciente)
+    {
+        vista.abrirDetalleCita(cita.id, idUsuario)
     }
 
     fun mostrarProximas()

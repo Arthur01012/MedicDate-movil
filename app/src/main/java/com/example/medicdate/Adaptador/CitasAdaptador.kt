@@ -7,8 +7,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.medicdate.Modelo.dataCitaPaciente
 import com.example.medicdate.R
+import com.example.medicdate.Vista.MisCitasActivity
 
-class CitasAdaptador(private val lista: List<dataCitaPaciente>) :
+class CitasAdaptador(
+    private val activity: MisCitasActivity,
+    private val lista: List<dataCitaPaciente>
+) :
     RecyclerView.Adapter<CitasAdaptador.CitaViewHolder>() {
 
     private val meses = listOf("ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC")
@@ -40,6 +44,12 @@ class CitasAdaptador(private val lista: List<dataCitaPaciente>) :
         holder.txtEspecialidad.text = if (cita.especialidad.isEmpty()) "Consulta" else cita.especialidad
         holder.txtMedicoHora.text = cita.medico + " · " + cita.hora
         holder.txtEstado.text = cita.estado
+
+        holder.itemView.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(view: View?) {
+                activity.verDetalleCita(cita)
+            }
+        })
     }
 
     override fun getItemCount(): Int = lista.size
