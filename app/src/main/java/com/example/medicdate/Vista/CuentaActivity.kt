@@ -38,6 +38,11 @@ class CuentaActivity : AppCompatActivity() {
 
         btnCerrarSesion.setOnClickListener(this::ejecutarCerrarSesion)
         txtDatosPersonales.setOnClickListener(this::irADatosPersonales)
+    }
+
+    override fun onResume()
+    {
+        super.onResume()
         presenter.cargarCuenta(intent.getIntExtra("ID_USUARIO", 0))
     }
 

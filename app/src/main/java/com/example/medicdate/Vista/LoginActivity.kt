@@ -21,6 +21,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txtClave: EditText
     private lateinit var btnLogin: Button
     private lateinit var txtCrearCuenta: TextView
+    private lateinit var txtOlvidoClave: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,16 +39,23 @@ class LoginActivity : AppCompatActivity() {
         txtClave = findViewById(R.id.txtClave)
         btnLogin = findViewById(R.id.btnLogin)
         txtCrearCuenta = findViewById(R.id.txtCrearCuenta)
+        txtOlvidoClave = findViewById(R.id.txtOlvidoClave)
 
         presenter = clsPresentadorLogin(this)
 
         btnLogin.setOnClickListener(this::ejecutarInicioSesion)
         txtCrearCuenta.setOnClickListener(this::ejecutarCrearCuenta)
+        txtOlvidoClave.setOnClickListener(this::ejecutarOlvidoClave)
     }
 
     fun ejecutarInicioSesion(v: View)
     {
         presenter.realizarLogin(txtCorreo.text.toString().trim(), txtClave.text.toString().trim())
+    }
+
+    fun ejecutarOlvidoClave(v: View)
+    {
+        startActivity(Intent(this, RecuperarCorreoActivity::class.java))
     }
 
     fun ejecutarCrearCuenta(v: View)

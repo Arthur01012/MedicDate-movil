@@ -199,6 +199,54 @@
                     android:textColor="@color/texto" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Pregunta secreta"
+                android:textColor="@color/texto"
+                android:textSize="14sp" />
+
+            <Spinner
+                android:id="@+id/spPregunta"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginTop="6dp"
+                android:background="@drawable/bg_input"
+                android:paddingStart="8dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Respuesta"
+                android:textColor="@color/texto"
+                android:textSize="14sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/layoutRespuesta"
+                style="@style/CampoMedicDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtRespuesta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Respuesta"
+                    android:inputType="text"
+                    android:textColor="@color/texto" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="La usaremos si olvidas tu contraseña."
+                android:textColor="@color/texto_secundario"
+                android:textSize="13sp" />
+
             <Button
                 android:id="@+id/btnCrearCuenta"
                 android:layout_width="match_parent"

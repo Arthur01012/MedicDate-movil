@@ -26,6 +26,14 @@
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:name=".Vista.RecuperarCorreoActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.RecuperarContrasenaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".Vista.RegistroActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

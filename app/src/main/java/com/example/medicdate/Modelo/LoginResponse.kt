@@ -4,7 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class dataGuardarDatosPersonales(
+data class LoginResponse(
     @SerialName("exito") val exito: Boolean = false,
-    @SerialName("mensaje") val mensaje: String = ""
+    @SerialName("mensaje") val mensaje: String = "",
+    @SerialName("idUsuario") val idUsuario: Int = 0,
+    @SerialName("idPaciente") val idPaciente: Int = 0
 )

@@ -4,14 +4,9 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class dataDatosPersonales(
+data class CuentaResponse(
     @SerialName("exito") val exito: Boolean = false,
     @SerialName("mensaje") val mensaje: String = "",
-    @SerialName("nombres") val nombres: String = "",
-    @SerialName("apellidoPaterno") val apellidoPaterno: String = "",
-    @SerialName("apellidoMaterno") val apellidoMaterno: String = "",
-    @SerialName("telefono") val telefono: String = "",
+    @SerialName("nombre") val nombre: String = "",
     @SerialName("correo") val correo: String = ""
 )
-
-
