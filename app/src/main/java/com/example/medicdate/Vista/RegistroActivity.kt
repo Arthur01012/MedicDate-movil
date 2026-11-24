@@ -57,10 +57,15 @@ class RegistroActivity : AppCompatActivity() {
 
         presenter = clsPresentadorRegistro(this)
 
+        configurarListeners()
+        presenter.cargarPreguntas()
+    }
+
+    private fun configurarListeners()
+    {
         btnCrearCuenta.setOnClickListener(this::ejecutarRegistro)
         btnVolver.setOnClickListener(this::ejecutarVolver)
         txtIniciarSesion.setOnClickListener(this::ejecutarVolver)
-        presenter.cargarPreguntas()
     }
 
     fun ejecutarRegistro(v: View)

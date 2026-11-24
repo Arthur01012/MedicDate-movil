@@ -44,7 +44,12 @@ class DatosPersonalesActivity : AppCompatActivity() {
         btnGuardar = findViewById(R.id.btnGuardar)
         presenter = clsPresentadorDatosPersonales(this)
 
+        configurarListeners()
         presenter.cargarDatos(intent.getIntExtra("ID_USUARIO", 0))
+    }
+
+    private fun configurarListeners()
+    {
         txtVolver.setOnClickListener { finish() }
         btnGuardar.setOnClickListener(this::ejecutarGuardar)
     }
