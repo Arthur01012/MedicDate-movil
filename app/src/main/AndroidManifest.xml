@@ -22,6 +22,10 @@
             android:name=".Vista.CuentaActivity"
             android:exported="false" />
         <activity
+            android:name=".Vista.DatosPersonalesActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".Vista.RegistroActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
