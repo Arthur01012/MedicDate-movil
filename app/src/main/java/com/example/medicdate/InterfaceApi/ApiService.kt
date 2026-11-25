@@ -5,14 +5,9 @@ import com.example.medicdate.Modelo.DetalleCita
 import com.example.medicdate.Modelo.DisponibilidadRequest
 import com.example.medicdate.Modelo.DisponibilidadResponse
 import com.example.medicdate.Modelo.LoginRequest
-<<<<<<< HEAD
-import com.example.medicdate.Modelo.dataCuenta
-import com.example.medicdate.Modelo.dataLogin
-import com.example.medicdate.Modelo.dataRegistro
 import com.example.medicdate.Modelo.dataCitaPaciente
 import com.example.medicdate.Modelo.dataDetalleCita
 import com.example.medicdate.Modelo.dataCancelarCita
-=======
 import com.example.medicdate.Modelo.ReservaRequest
 import com.example.medicdate.Modelo.ReservaResponse
 import com.example.medicdate.Modelo.CuentaResponse
@@ -28,7 +23,6 @@ import com.example.medicdate.Modelo.RegistroResponse
 import com.example.medicdate.Modelo.DatosPersonalesRequest
 import com.example.medicdate.Modelo.GuardarDatosPersonalesResponse
 import com.example.medicdate.Modelo.PreguntasResponse
->>>>>>> origin/desarrollo
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -88,17 +82,12 @@ interface ApiService {
     @GET("citas_paciente.php")
     suspend fun obtenerCitasPaciente(
         @Query("id_usuario") idUsuario: Int
-<<<<<<< HEAD
     ): List<dataCitaPaciente>
-=======
-    ): List<CitaPaciente>
->>>>>>> origin/desarrollo
 
     @GET("detalle_cita.php")
     suspend fun obtenerDetalleCita(
         @Query("id_cita") idCita: Int,
         @Query("id_usuario") idUsuario: Int
-<<<<<<< HEAD
     ): dataDetalleCita
 
     @FormUrlEncoded
@@ -107,13 +96,10 @@ interface ApiService {
         @Field("id_cita") idCita: Int,
         @Field("id_usuario") idUsuario: Int
     ): dataCancelarCita
-=======
-    ): DetalleCita
 
     @GET("obtener_contrasena.php")
     suspend fun obtenerPreguntasSecretas(): PreguntasResponse
 
     @GET("datos_personales.php")
     suspend fun obtenerDatosPersonales(@Query("idUsuario") idUsuario: Int, @Query("t") t: Long): DatosPersonalesResponse
->>>>>>> origin/desarrollo
 }
