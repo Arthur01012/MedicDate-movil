@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="24dp"
+    android:layout_marginEnd="24dp"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_card"
+    android:padding="12dp">
+
+    <TextView
+        android:id="@+id/txtDia"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_input"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:textColor="@color/azul"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="13" />
+
+    <TextView
+        android:id="@+id/txtMes"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_input"
+        android:gravity="center"
+        android:paddingBottom="6dp"
+        android:textColor="@color/azul"
+        android:textSize="11sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDia"
+        tools:text="NOV" />
+
+    <TextView
+        android:id="@+id/txtEspecialidad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:textColor="@color/texto"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDia"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Cardiología" />
+
+    <TextView
+        android:id="@+id/txtMedicoHora"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/texto_secundario"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtDia"
+        app:layout_constraintTop_toBottomOf="@+id/txtEspecialidad"
+        tools:text="Dra. Laura Méndez · 10:30" />
+
+    <TextView
+        android:id="@+id/txtEstado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_chip"
+        android:paddingStart="8dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="2dp"
+        android:textColor="@color/azul"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/txtDia"
+        app:layout_constraintTop_toBottomOf="@+id/txtMedicoHora"
+        tools:text="pendiente" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

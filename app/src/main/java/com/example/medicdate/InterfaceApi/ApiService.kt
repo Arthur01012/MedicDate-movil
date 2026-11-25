@@ -5,6 +5,9 @@ import com.example.medicdate.Modelo.DetalleCita
 import com.example.medicdate.Modelo.DisponibilidadRequest
 import com.example.medicdate.Modelo.DisponibilidadResponse
 import com.example.medicdate.Modelo.LoginRequest
+import com.example.medicdate.Modelo.dataCitaPaciente
+import com.example.medicdate.Modelo.dataDetalleCita
+import com.example.medicdate.Modelo.dataCancelarCita
 import com.example.medicdate.Modelo.ReservaRequest
 import com.example.medicdate.Modelo.ReservaResponse
 import com.example.medicdate.Modelo.CuentaResponse
@@ -26,6 +29,7 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Query
+
 
 interface ApiService {
     @POST("reservar_cita.php")
@@ -78,13 +82,20 @@ interface ApiService {
     @GET("citas_paciente.php")
     suspend fun obtenerCitasPaciente(
         @Query("id_usuario") idUsuario: Int
-    ): List<CitaPaciente>
+    ): List<dataCitaPaciente>
 
     @GET("detalle_cita.php")
     suspend fun obtenerDetalleCita(
         @Query("id_cita") idCita: Int,
         @Query("id_usuario") idUsuario: Int
-    ): DetalleCita
+    ): dataDetalleCita
+
+    @FormUrlEncoded
+    @POST("cancelar_cita.php")
+    suspend fun cancelarCita(
+        @Field("id_cita") idCita: Int,
+        @Field("id_usuario") idUsuario: Int
+    ): dataCancelarCita
 
     @GET("obtener_contrasena.php")
     suspend fun obtenerPreguntasSecretas(): PreguntasResponse
