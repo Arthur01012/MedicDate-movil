@@ -2,6 +2,18 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="brand_primary">#0E67A8</color>
+    <color name="on_brand">#FFFFFFFF</color>
+    <color name="surface">#FFFFFFFF</color>
+    <color name="surface_soft">#F2F6FB</color>
+    <color name="text_primary">#20252B</color>
+    <color name="text_secondary">#6E7884</color>
+    <color name="divider">#DCE3EA</color>
+    <color name="date_outline">#E3E9EF</color>
+    <color name="success_background">#DFF5EB</color>
+    <color name="success_text">#16885D</color>
+    <color name="error_background">#FCEBE9</color>
+    <color name="error_text">#A83B32</color>
     <color name="azul">#0B5FA5</color>
     <color name="texto">#1A1A1A</color>
     <color name="texto_secundario">#5B6672</color>
