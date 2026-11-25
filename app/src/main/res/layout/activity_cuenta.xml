@@ -16,51 +16,99 @@
         android:layout_marginTop="24dp"
         android:text="Cuenta"
         android:textColor="@color/texto"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/txtIniciales"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/bg_avatar"
+        android:gravity="center"
+        android:textColor="@color/azul"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitulo"
+        tools:text="ML" />
+
+    <TextView
         android:id="@+id/txtNombre"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="32dp"
         android:textColor="@color/texto"
         android:textSize="20sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/txtCorreo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitulo"
+        app:layout_constraintStart_toEndOf="@+id/txtIniciales"
+        app:layout_constraintTop_toTopOf="@+id/txtIniciales"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="María López Hernández" />
 
     <TextView
         android:id="@+id/txtCorreo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="24dp"
         android:textColor="@color/texto_secundario"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtIniciales"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtIniciales"
         app:layout_constraintTop_toBottomOf="@+id/txtNombre"
         tools:text="maria.lopez@correo.com" />
 
-    <Button
-        android:id="@+id/btnCerrarSesion"
+    <TextView
+        android:id="@+id/txtDatosPersonales"
         android:layout_width="0dp"
-        android:layout_height="52dp"
+        android:layout_height="56dp"
         android:layout_marginStart="24dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/rojo"
-        android:text="Cerrar sesión"
+        android:gravity="center_vertical"
+        android:text="Datos personales"
+        android:textColor="@color/texto"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtCorreo" />
+        app:layout_constraintTop_toBottomOf="@+id/txtIniciales" />
+
+    <TextView
+        android:id="@+id/txtFlechaDatos"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center_vertical"
+        android:text="›"
+        android:textColor="@color/texto_secundario"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtDatosPersonales"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txtDatosPersonales" />
+
+    <TextView
+        android:id="@+id/btnCerrarSesion"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:gravity="center_vertical"
+        android:text="Cerrar sesión"
+        android:textColor="@color/error_text"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtDatosPersonales" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

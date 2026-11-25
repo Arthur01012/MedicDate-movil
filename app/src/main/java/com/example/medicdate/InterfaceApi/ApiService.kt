@@ -7,11 +7,19 @@ import com.example.medicdate.Modelo.DisponibilidadResponse
 import com.example.medicdate.Modelo.LoginRequest
 import com.example.medicdate.Modelo.ReservaRequest
 import com.example.medicdate.Modelo.ReservaResponse
-import com.example.medicdate.Modelo.dataCuenta
+import com.example.medicdate.Modelo.CuentaResponse
+import com.example.medicdate.Modelo.DatosPersonalesResponse
 import com.example.medicdate.Modelo.dataExplorar
-import com.example.medicdate.Modelo.dataLogin
+import com.example.medicdate.Modelo.LoginResponse
+import com.example.medicdate.Modelo.CorreoRecuperarRequest
+import com.example.medicdate.Modelo.RecuperarRequest
+import com.example.medicdate.Modelo.PreguntaRecuperacionResponse
+import com.example.medicdate.Modelo.RecuperarResponse
 import com.example.medicdate.Modelo.dataMedicosEspecialidad
-import com.example.medicdate.Modelo.dataRegistro
+import com.example.medicdate.Modelo.RegistroResponse
+import com.example.medicdate.Modelo.DatosPersonalesRequest
+import com.example.medicdate.Modelo.GuardarDatosPersonalesResponse
+import com.example.medicdate.Modelo.PreguntasResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -30,7 +38,7 @@ interface ApiService {
     suspend fun obtenerDisponibilidadGet(@Query("datos") datosJson: String): DisponibilidadResponse
 
     @POST("login.php")
-    suspend fun iniciarSesion(@Body request: LoginRequest): dataLogin
+    suspend fun iniciarSesion(@Body request: LoginRequest): LoginResponse
 
     @FormUrlEncoded
     @POST("registro.php")
@@ -40,11 +48,22 @@ interface ApiService {
         @Field("apellidoMaterno") apellidoMaterno: String,
         @Field("correo") correo: String,
         @Field("telefono") telefono: String,
-        @Field("clave") clave: String
-    ): dataRegistro
+        @Field("clave") clave: String,
+        @Field("idPregunta") idPregunta: Int,
+        @Field("respuesta") respuesta: String
+    ): RegistroResponse
+
+    @POST("pregunta_recuperacion.php")
+    suspend fun obtenerPreguntaRecuperacion(@Body request: CorreoRecuperarRequest): PreguntaRecuperacionResponse
+
+    @POST("recuperar_contrasena.php")
+    suspend fun recuperarContrasena(@Body request: RecuperarRequest): RecuperarResponse
 
     @GET("obtener_cuenta.php")
-    suspend fun obtenerCuenta(@Query("idUsuario") idUsuario: Int): dataCuenta
+    suspend fun obtenerCuenta(@Query("idUsuario") idUsuario: Int): CuentaResponse
+
+    @POST("actualizar_datos_personales.php")
+    suspend fun actualizarDatosPersonales(@Body request: DatosPersonalesRequest): GuardarDatosPersonalesResponse
 
     @GET("explorar.php")
     suspend fun obtenerExplorar(
@@ -66,4 +85,10 @@ interface ApiService {
         @Query("id_cita") idCita: Int,
         @Query("id_usuario") idUsuario: Int
     ): DetalleCita
+
+    @GET("obtener_contrasena.php")
+    suspend fun obtenerPreguntasSecretas(): PreguntasResponse
+
+    @GET("datos_personales.php")
+    suspend fun obtenerDatosPersonales(@Query("idUsuario") idUsuario: Int, @Query("t") t: Long): DatosPersonalesResponse
 }
