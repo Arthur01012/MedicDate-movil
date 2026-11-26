@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingStart="22dp"
+            android:paddingEnd="22dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <!-- Encabezado: saludo + campana -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtSaludo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Hola, María"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#252525"/>
+
+                <FrameLayout
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_circulo_notif">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_campana"
+                        app:tint="#252525"
+                        android:contentDescription="Notificaciones"/>
+
+                    <View
+                        android:layout_width="9dp"
+                        android:layout_height="9dp"
+                        android:layout_gravity="top|end"
+                        android:layout_marginTop="9dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_punto_notif"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <!-- Buscador -->
+            <EditText
+                android:id="@+id/edtBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginTop="18dp"
+                android:background="@drawable/bg_buscador"
+                android:drawableStart="@drawable/ic_buscar"
+                android:drawableTint="#737373"
+                android:drawablePadding="10dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:hint="Buscar médico o especialidad"
+                android:textColor="#252525"
+                android:textColorHint="#737373"
+                android:textSize="14sp"
+                android:singleLine="true"/>
+
+            <!-- Tu próxima cita -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:padding="18dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:background="@drawable/bg_cita_card">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tu próxima cita"
+                        android:textColor="#D9E9F6"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/txtFechaCita"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="Sin citas próximas"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/txtDetalleCita"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textColor="#E3EEF8"
+                        android:textSize="13sp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_chevron"
+                    app:tint="#FFFFFF"
+                    android:contentDescription="Ver cita"/>
+            </LinearLayout>
+
+            <!-- Especialidades -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Especialidades"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:textColor="#252525"
+                android:layout_marginTop="24dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEspecialidades"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="-5dp"
+                android:layout_marginEnd="-5dp"/>
+
+            <!-- Médicos disponibles -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Médicos disponibles"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                android:textColor="#252525"
+                android:layout_marginTop="20dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvMedicos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Barra inferior (el código la lee como getChildAt(1) con 3 TextView) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_nav_inferior">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Explorar"
+            android:textColor="#0B5FA5"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:drawableTop="@drawable/ic_nav_explorar"
+            android:drawableTint="#0B5FA5"
+            android:drawablePadding="4dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Citas"
+            android:textColor="#737373"
+            android:textSize="11sp"
+            android:drawableTop="@drawable/ic_nav_citas"
+            android:drawableTint="#737373"
+            android:drawablePadding="4dp"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Cuenta"
+            android:textColor="#737373"
+            android:textSize="11sp"
+            android:drawableTop="@drawable/ic_nav_cuenta"
+            android:drawableTint="#737373"
+            android:drawablePadding="4dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

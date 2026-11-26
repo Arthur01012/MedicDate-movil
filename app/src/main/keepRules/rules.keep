@@ -4,9 +4,56 @@
 # For more details, see
 #   https://d.android.com/r/tools/r8/keep-rules
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Preserve annotations and inner classes required for reflection.
+-keepattributes Signature,Annotation,InnerClasses,EnclosingMethod
+
+# Obfuscate source-file names and preserve real line numbers.
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
+# Keep all classes and members in the Modelo package.
+-keep class com.example.medicdate.Modelo.** { *; }
+-keepclassmembers class com.example.medicdate.Modelo.** { *; }
+
+# Keep members annotated with Kotlin serialization annotations.
+-keepclassmembers class * {
+    @kotlinx.serialization.Serializable *;
+}
+-keepclassmembers class * {
+    @kotlinx.serialization.SerialName *;
+}
+
+# Keep generated Kotlin serializers and Companion members.
+-keepclassmembers class *$$serializer { *; }
+-keepclassmembers class * {
+    * Companion;
+}
+
+# Keep API interfaces and HTTP-annotated methods.
+-keep interface com.example.medicdate.InterfaceApi.** { *; }
+-keepclassmembers class * {
+    @retrofit2.http.* <methods>;
+}
+
+# Keep custom views inflated from XML layouts.
+-keep public class com.example.medicdate.UI.** extends android.view.View {
+    public <init>(android.content.Context);
+    public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+# Suppress warnings for Retrofit, OkHttp, Okio, and Glide.
+-dontwarn retrofit2.**
+-dontwarn okhttp3.**
+-dontwarn okio.**
+-dontwarn com.bumptech.glide.**
+
+# Keep OkHttp's public suffix database class name.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Keep Glide modules and their constructors.
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep class * implements com.bumptech.glide.module.GlideModule
+-keepclassmembers class * implements com.bumptech.glide.module.GlideModule {
+    public <init>();
+}
