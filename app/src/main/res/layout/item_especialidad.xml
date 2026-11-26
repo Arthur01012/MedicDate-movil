@@ -2,11 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    android:background="#F2F6FB"
+    android:layout_margin="5dp"
+    android:background="@drawable/bg_tarjeta_suave"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:padding="16dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/txtNombreEspecialidad"
@@ -14,6 +17,6 @@
         android:layout_height="wrap_content"
         android:text="Especialidad"
         android:textColor="#252525"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-medium" />
 </LinearLayout>
