@@ -7,7 +7,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.medicdate.Presentador.clsPresentadorCitaConfirmada
@@ -17,8 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class CitaConfirmadaActivity : AppCompatActivity(),
-    View.OnClickListener,
-    OnApplyWindowInsetsListener {
+    View.OnClickListener {
 
     private lateinit var presenter: clsPresentadorCitaConfirmada
     private lateinit var btnViewAppointments: MaterialButton
@@ -29,7 +27,11 @@ class CitaConfirmadaActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_cita_confirmada)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), this)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         idCita = intent.getIntExtra(EXTRA_ID_CITA, -1)
         val doctorName = intent.getStringExtra(EXTRA_DOCTOR_NAME).orEmpty()
@@ -70,15 +72,6 @@ class CitaConfirmadaActivity : AppCompatActivity(),
         btnBackHome = findViewById(R.id.button_back_home)
         btnViewAppointments.setOnClickListener(this)
         btnBackHome.setOnClickListener(this)
-    }
-
-    override fun onApplyWindowInsets(
-        view: View,
-        insets: WindowInsetsCompat
-    ): WindowInsetsCompat {
-        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-        return insets
     }
 
     override fun onClick(view: View) {
