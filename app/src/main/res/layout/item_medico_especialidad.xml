@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    android:background="#F2F6FB"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_tarjeta_suave"
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:padding="14dp">
@@ -12,11 +13,11 @@
         android:id="@+id/txtIniciales"
         android:layout_width="44dp"
         android:layout_height="44dp"
-        android:background="#DCEBFA"
+        android:background="@drawable/bg_avatar"
         android:gravity="center"
         android:text="MD"
         android:textColor="#0B5FA5"
-        android:textSize="15sp"
+        android:textSize="14sp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -32,8 +33,8 @@
             android:layout_height="wrap_content"
             android:text="Nombre del médico"
             android:textColor="#252525"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="15sp"
+            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:id="@+id/txtSubtitulo"
@@ -51,14 +52,15 @@
             android:layout_marginTop="3dp"
             android:text="Próximo horario: ---"
             android:textColor="#0B5FA5"
-            android:textSize="13sp"
+            android:textSize="12sp"
             android:textStyle="bold" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="›"
-        android:textColor="#737373"
-        android:textSize="22sp" />
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_chevron"
+        app:tint="#737373"
+        android:contentDescription="Ver horarios" />
 </LinearLayout>
