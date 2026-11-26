@@ -218,16 +218,16 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/button_choose_another_time"
-            style="@style/Widget.Material3.Button.TextButton"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_marginTop="2dp"
+            android:layout_height="48dp"
             android:text="@string/choose_another_time"
             android:textAllCaps="false"
-            android:textColor="@color/brand_primary"
-            android:textSize="13sp"
+            android:textColor="@color/on_brand"
+            android:textSize="14sp"
+            android:textStyle="bold"
             android:visibility="gone"
-            app:backgroundTint="@android:color/transparent"
+            app:backgroundTint="@color/brand_primary"
+            app:cornerRadius="14dp"
             tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton

@@ -3,6 +3,7 @@ package com.example.medicdate.UI
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewConfiguration
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -17,7 +18,15 @@ class WeekSwipeLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : LinearLayout(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr), View.OnClickListener {
+
+    interface OnDateChangeListener {
+        fun onDateChanged(newDate: String)
+    }
+
+    interface OnWeekSwipeListener {
+        fun onWeekSwiped(direction: Int)
+    }
 
     private val apiDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
     private val dayNumFormat = SimpleDateFormat("d", Locale.getDefault())
@@ -28,8 +37,9 @@ class WeekSwipeLayout @JvmOverloads constructor(
     private val todayCalendar: Calendar = Calendar.getInstance()
 
     private var doctorWorkingDays: Set<Int> = emptySet()
-    private var onDateChangeListener: ((String) -> Unit)? = null
-    var onWeekSwipe: ((Int) -> Unit)? = null
+    private var workingDaysLoaded: Boolean = false
+    private var onDateChangeListener: OnDateChangeListener? = null
+    private var onWeekSwipeListener: OnWeekSwipeListener? = null
 
     private val touchSlop = ViewConfiguration.get(context).scaledTouchSlop
     private var startX = 0f
@@ -46,57 +56,81 @@ class WeekSwipeLayout @JvmOverloads constructor(
         todayCalendar.set(Calendar.SECOND, 0)
         todayCalendar.set(Calendar.MILLISECOND, 0)
 
-        mondayCalendar.time = todayCalendar.time
-        mondayCalendar.firstDayOfWeek = Calendar.MONDAY
-        mondayCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        selectedCalendar.time = todayCalendar.time
+        selectedCalendar.add(Calendar.DAY_OF_YEAR, 1)
 
-        findAndSetFirstValidDateInWeek()
+        mondayCalendar.time = selectedCalendar.time
+        moverALunesDeSemana(mondayCalendar)
     }
 
-    fun setDoctorWorkingDays(days: Set<Int>) {
-        if (doctorWorkingDays != days) {
-            doctorWorkingDays = days
-            findAndSetFirstValidDateInWeek()
-            updateWeekUi()
+    private fun moverALunesDeSemana(cal: Calendar) {
+        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
+            cal.add(Calendar.DAY_OF_YEAR, -1)
         }
     }
 
+    fun setDoctorWorkingDays(days: Set<Int>): Boolean {
+        val fechaAnterior = currentDateString
+        val cambiaronDias = !workingDaysLoaded || doctorWorkingDays != days
+        doctorWorkingDays = days
+        workingDaysLoaded = true
+
+        val fechaActualValida = selectedCalendar.after(todayCalendar) &&
+            isDoctorWorkingDay(selectedCalendar)
+
+        if (!fechaActualValida && doctorWorkingDays.isNotEmpty()) {
+            val inicioBusqueda = todayCalendar.clone() as Calendar
+            moverALunesDeSemana(inicioBusqueda)
+            if (mondayCalendar.before(inicioBusqueda)) {
+                mondayCalendar.time = inicioBusqueda.time
+            }
+            findAndSetFirstValidDateInWeek()
+        }
+
+        if (cambiaronDias || !fechaActualValida) {
+            updateWeekUi()
+        }
+
+        return currentDateString != fechaAnterior
+    }
+
+    fun tieneDiasDeAtencion(): Boolean {
+        return workingDaysLoaded && doctorWorkingDays.isNotEmpty()
+    }
+
     private fun isDoctorWorkingDay(cal: Calendar): Boolean {
-        if (doctorWorkingDays.isEmpty()) {
-            val dayOfWeek = cal.get(Calendar.DAY_OF_WEEK)
-            return dayOfWeek != Calendar.SATURDAY && dayOfWeek != Calendar.SUNDAY
+        if (!workingDaysLoaded || doctorWorkingDays.isEmpty()) {
+            return false
         }
         val calDay = cal.get(Calendar.DAY_OF_WEEK)
         val isoDay = if (calDay == Calendar.SUNDAY) 7 else calDay - 1
         return doctorWorkingDays.contains(isoDay)
     }
 
-    private fun findAndSetFirstValidDateInWeek() {
-        val temp = mondayCalendar.clone() as Calendar
-        var found = false
-        for (i in 0..6) {
-            val isWorking = isDoctorWorkingDay(temp)
-            val isFuture = temp.after(todayCalendar)
+    private fun findAndSetFirstValidDateInWeek(): Boolean {
+        if (!workingDaysLoaded || doctorWorkingDays.isEmpty()) {
+            return false
+        }
 
-            if (isFuture && isWorking) {
-                selectedCalendar.time = temp.time
-                found = true
-                break
+        val searchMonday = mondayCalendar.clone() as Calendar
+        moverALunesDeSemana(searchMonday)
+
+        for (weekOffset in 0 until MAX_SEARCH_WEEKS) {
+            val temp = searchMonday.clone() as Calendar
+            for (dayOffset in 0..6) {
+                val isWorking = isDoctorWorkingDay(temp)
+                val isFuture = temp.after(todayCalendar)
+                if (isFuture && isWorking) {
+                    selectedCalendar.time = temp.time
+                    mondayCalendar.time = temp.time
+                    moverALunesDeSemana(mondayCalendar)
+                    return true
+                }
+                temp.add(Calendar.DAY_OF_YEAR, 1)
             }
-            temp.add(Calendar.DAY_OF_YEAR, 1)
+            searchMonday.add(Calendar.WEEK_OF_YEAR, 1)
         }
-
-        if (!found) {
-            mondayCalendar.add(Calendar.WEEK_OF_YEAR, 1)
-            mondayCalendar.firstDayOfWeek = Calendar.MONDAY
-            mondayCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
-            findAndSetFirstValidDateInWeek()
-            return
-        }
-
-        mondayCalendar.time = selectedCalendar.time
-        mondayCalendar.firstDayOfWeek = Calendar.MONDAY
-        mondayCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        return false
     }
 
     override fun onFinishInflate() {
@@ -108,14 +142,21 @@ class WeekSwipeLayout @JvmOverloads constructor(
     private fun setupDayViews() {
         for (i in 0 until childCount) {
             val child = getChildAt(i)
-            val dayIndex = i
-            child.setOnClickListener {
-                selectDayInCurrentWeek(dayIndex)
-            }
+            child.tag = i
+            child.setOnClickListener(this)
         }
     }
 
+    override fun onClick(view: View) {
+        val dayIndex = view.tag as? Int ?: return
+        selectDayInCurrentWeek(dayIndex)
+    }
+
     private fun selectDayInCurrentWeek(dayIndex: Int) {
+        if (!workingDaysLoaded || doctorWorkingDays.isEmpty()) {
+            return
+        }
+
         val temp = mondayCalendar.clone() as Calendar
         temp.add(Calendar.DAY_OF_YEAR, dayIndex)
 
@@ -128,26 +169,38 @@ class WeekSwipeLayout @JvmOverloads constructor(
 
         selectedCalendar.time = temp.time
         updateWeekUi()
-        onDateChangeListener?.invoke(currentDateString)
+        onDateChangeListener?.onDateChanged(currentDateString)
     }
 
     fun changeWeek(direction: Int) {
+        if (!workingDaysLoaded || doctorWorkingDays.isEmpty()) {
+            return
+        }
+
         val currentWeekMonday = todayCalendar.clone() as Calendar
-        currentWeekMonday.firstDayOfWeek = Calendar.MONDAY
-        currentWeekMonday.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY)
+        moverALunesDeSemana(currentWeekMonday)
 
         if (direction < 0 && !mondayCalendar.after(currentWeekMonday)) {
             return
         }
 
         mondayCalendar.add(Calendar.WEEK_OF_YEAR, direction)
+        moverALunesDeSemana(mondayCalendar)
+        if (mondayCalendar.before(currentWeekMonday)) {
+            mondayCalendar.time = currentWeekMonday.time
+        }
+
         findAndSetFirstValidDateInWeek()
         updateWeekUi()
-        onDateChangeListener?.invoke(currentDateString)
+        onDateChangeListener?.onDateChanged(currentDateString)
     }
 
-    fun setOnDateChangeListener(listener: (String) -> Unit) {
+    fun setOnDateChangeListener(listener: OnDateChangeListener?) {
         onDateChangeListener = listener
+    }
+
+    fun setOnWeekSwipeListener(listener: OnWeekSwipeListener?) {
+        onWeekSwipeListener = listener
     }
 
     fun getWeekRangeLabel(): String {
@@ -190,6 +243,7 @@ class WeekSwipeLayout @JvmOverloads constructor(
                     child.alpha = 1.0f
                     child.isEnabled = true
                     child.isClickable = true
+                    child.setOnClickListener(this)
                 } else if (isValidDate) {
                     child.setBackgroundResource(R.drawable.bg_date_default)
                     tvDayName?.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
@@ -197,11 +251,13 @@ class WeekSwipeLayout @JvmOverloads constructor(
                     child.alpha = 1.0f
                     child.isEnabled = true
                     child.isClickable = true
+                    child.setOnClickListener(this)
                 } else {
                     child.setBackgroundResource(R.drawable.bg_date_default)
                     tvDayName?.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                     tvDayNum?.setTextColor(ContextCompat.getColor(context, R.color.text_secondary))
                     child.alpha = 0.35f
+                    child.setOnClickListener(null)
                     child.isEnabled = false
                     child.isClickable = false
                 }
@@ -235,7 +291,7 @@ class WeekSwipeLayout @JvmOverloads constructor(
                 if (abs(distanceX) > touchSlop) {
                     val direction = if (distanceX < 0) 1 else -1
                     changeWeek(direction)
-                    onWeekSwipe?.invoke(direction)
+                    onWeekSwipeListener?.onWeekSwiped(direction)
                     performClick()
                     return true
                 }
@@ -249,5 +305,9 @@ class WeekSwipeLayout @JvmOverloads constructor(
     override fun performClick(): Boolean {
         super.performClick()
         return true
+    }
+
+    companion object {
+        private const val MAX_SEARCH_WEEKS = 52
     }
 }

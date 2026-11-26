@@ -2,34 +2,26 @@ package com.example.medicdate.Modelo
 
 import com.example.medicdate.InterfaceApi.ApiService
 import com.example.medicdate.Red.RetrofitCliente
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import retrofit2.HttpException
+import retrofit2.Call
 
 class clsReservaCitaModelo {
     private val api: ApiService = RetrofitCliente.apiService
-    private val jsonConfig = Json {
-        ignoreUnknownKeys = true
-        coerceInputValues = true
-        isLenient = true
+
+    fun reservarCita(req: ReservaRequest): Call<ReservaResponse> {
+        return api.reservarCitaCall(req)
     }
 
-    suspend fun reservarCita(req: ReservaRequest): ReservaResponse =
-        withContext(Dispatchers.IO) {
-            try {
-                api.reservarCita(req)
-            } catch (e: HttpException) {
-                try {
-                    val errorBody = e.response()?.errorBody()?.string()
-                    if (!errorBody.isNullOrEmpty()) {
-                        return@withContext jsonConfig.decodeFromString<ReservaResponse>(errorBody)
-                    }
-                } catch (_: Exception) {
-                }
-                ReservaResponse(exito = false, mensaje = e.message())
-            } catch (e: Exception) {
-                ReservaResponse(exito = false, mensaje = e.localizedMessage ?: "Error al reservar cita")
-            }
+    fun parsearError(errorBody: String?): ReservaResponse? {
+        if (errorBody.isNullOrEmpty()) {
+            return null
         }
+        return try {
+            RetrofitCliente.jsonConfig.decodeFromString(
+                ReservaResponse.serializer(),
+                errorBody
+            )
+        } catch (_: Exception) {
+            null
+        }
+    }
 }
