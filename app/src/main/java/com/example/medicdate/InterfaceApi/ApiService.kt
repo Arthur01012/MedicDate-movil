@@ -23,6 +23,7 @@ import com.example.medicdate.Modelo.RegistroResponse
 import com.example.medicdate.Modelo.DatosPersonalesRequest
 import com.example.medicdate.Modelo.GuardarDatosPersonalesResponse
 import com.example.medicdate.Modelo.PreguntasResponse
+import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -35,11 +36,20 @@ interface ApiService {
     @POST("reservar_cita.php")
     suspend fun reservarCita(@Body request: ReservaRequest): ReservaResponse
 
+    @POST("reservar_cita.php")
+    fun reservarCitaCall(@Body request: ReservaRequest): Call<ReservaResponse>
+
     @POST("disponibilidad.php")
     suspend fun obtenerDisponibilidad(@Body request: DisponibilidadRequest): DisponibilidadResponse
 
+    @POST("disponibilidad.php")
+    fun obtenerDisponibilidadCall(@Body request: DisponibilidadRequest): Call<DisponibilidadResponse>
+
     @GET("disponibilidad.php")
     suspend fun obtenerDisponibilidadGet(@Query("datos") datosJson: String): DisponibilidadResponse
+
+    @GET("disponibilidad.php")
+    fun obtenerDisponibilidadGetCall(@Query("datos") datosJson: String): Call<DisponibilidadResponse>
 
     @POST("login.php")
     suspend fun iniciarSesion(@Body request: LoginRequest): LoginResponse

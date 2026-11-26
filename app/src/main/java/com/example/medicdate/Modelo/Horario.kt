@@ -14,5 +14,8 @@ data class Horario(
     @SerialName("duracion_minutos") val duracion_minutos: Int = 0,
     @SerialName("id_consultorio") val id_consultorio: Int? = null,
     @SerialName("consultorio") val consultorio: String? = null,
-    @SerialName("disponible") val disponible: Boolean = true
+    @SerialName("disponible") val disponible: Boolean = true,
+    @SerialName("bloqueado") val bloqueado: Boolean = false,
+    @SerialName("codigo") val codigo: String? = null,
+    @SerialName("mensaje") val mensaje: String? = null
 )
