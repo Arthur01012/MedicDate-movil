@@ -11,7 +11,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.medicdate.Modelo.ReservaRequest
@@ -23,8 +22,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class ConfirmarCitaActivity : AppCompatActivity(),
-    View.OnClickListener,
-    OnApplyWindowInsetsListener {
+    View.OnClickListener {
 
     private lateinit var presenter: clsPresentadorConfirmarCita
     private lateinit var btnBack: View
@@ -52,7 +50,11 @@ class ConfirmarCitaActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_confirmar_cita)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), this)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         SessionManager.init(this)
 
@@ -83,15 +85,6 @@ class ConfirmarCitaActivity : AppCompatActivity(),
             presenter.cancelarSolicitudes()
         }
         super.onDestroy()
-    }
-
-    override fun onApplyWindowInsets(
-        view: View,
-        insets: WindowInsetsCompat
-    ): WindowInsetsCompat {
-        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-        return insets
     }
 
     private fun inicializarVistas() {

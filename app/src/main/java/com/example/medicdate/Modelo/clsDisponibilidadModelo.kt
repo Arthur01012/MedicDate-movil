@@ -2,13 +2,19 @@ package com.example.medicdate.Modelo
 
 import com.example.medicdate.InterfaceApi.ApiService
 import com.example.medicdate.Red.RetrofitCliente
+import kotlinx.serialization.json.Json
 import retrofit2.Call
 
 class clsDisponibilidadModelo {
     private val api: ApiService = RetrofitCliente.apiService
+    private val jsonConfig = Json {
+        ignoreUnknownKeys = true
+        coerceInputValues = true
+        isLenient = true
+    }
 
     fun obtenerDisponibilidadGet(request: DisponibilidadRequest): Call<DisponibilidadResponse> {
-        val datosJson = RetrofitCliente.jsonConfig.encodeToString(
+        val datosJson = jsonConfig.encodeToString(
             DisponibilidadRequest.serializer(),
             request
         )
@@ -24,7 +30,7 @@ class clsDisponibilidadModelo {
             return null
         }
         return try {
-            RetrofitCliente.jsonConfig.decodeFromString(
+            jsonConfig.decodeFromString(
                 DisponibilidadResponse.serializer(),
                 errorBody
             )

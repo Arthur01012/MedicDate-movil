@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -31,15 +30,9 @@ import java.util.Locale
 
 class RecervarCitaActivity : AppCompatActivity(),
     View.OnClickListener,
-    OnApplyWindowInsetsListener,
     RadioGroup.OnCheckedChangeListener,
     WeekSwipeLayout.OnDateChangeListener,
-    WeekSwipeLayout.OnWeekSwipeListener,
-    RecervarCitaActivity.OnHorarioSeleccionadoListener {
-
-    interface OnHorarioSeleccionadoListener {
-        fun onHorarioSeleccionado(horario: Horario)
-    }
+    WeekSwipeLayout.OnWeekSwipeListener {
 
     private lateinit var presenter: clsPresentadorReservaCita
     private var doctorId: Int = 2
@@ -68,7 +61,11 @@ class RecervarCitaActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_recervar_cita)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), this)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         SessionManager.init(this)
 
@@ -118,15 +115,6 @@ class RecervarCitaActivity : AppCompatActivity(),
         super.onDestroy()
     }
 
-    override fun onApplyWindowInsets(
-        view: View,
-        insets: WindowInsetsCompat
-    ): WindowInsetsCompat {
-        val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-        view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-        return insets
-    }
-
     private fun inicializarVistas() {
         btnBack = findViewById(R.id.button_back)
         btnPreviousWeek = findViewById(R.id.button_previous_week)
@@ -161,13 +149,9 @@ class RecervarCitaActivity : AppCompatActivity(),
 
         actualizarSombreadoTipoAtencion(radioGroupTipo.checkedRadioButtonId)
 
-        horarioAdapter = HorarioAdapter(emptyList(), this)
+        horarioAdapter = HorarioAdapter(this, emptyList())
         rvHorarios.layoutManager = GridLayoutManager(this, 3)
         rvHorarios.adapter = horarioAdapter
-    }
-
-    override fun onHorarioSeleccionado(horario: Horario) {
-        seleccionarHorario(horario)
     }
 
     private fun configurarEventos() {
@@ -195,7 +179,7 @@ class RecervarCitaActivity : AppCompatActivity(),
         }
     }
 
-    override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
+    override fun onCheckedChanged(group: RadioGroup, checkedId: Int) {
         tipoAtencionId = if (checkedId == R.id.radio_follow_up) 2 else 1
         actualizarSombreadoTipoAtencion(checkedId)
         selectedHorario = null
@@ -352,7 +336,7 @@ class RecervarCitaActivity : AppCompatActivity(),
         rvHorarios.visibility = View.VISIBLE
     }
 
-    private fun seleccionarHorario(horario: Horario) {
+    fun seleccionarHorario(horario: Horario) {
         selectedHorario = horario
         actualizarResumen()
     }
@@ -387,8 +371,8 @@ class RecervarCitaActivity : AppCompatActivity(),
     }
 
     private class HorarioAdapter(
-        private var items: List<Horario>,
-        private val listener: OnHorarioSeleccionadoListener
+        private val activity: RecervarCitaActivity,
+        private var items: List<Horario>
     ) : RecyclerView.Adapter<HorarioAdapter.HorarioViewHolder>(), View.OnClickListener {
 
         private var selectedPosition: Int = -1
@@ -464,7 +448,7 @@ class RecervarCitaActivity : AppCompatActivity(),
                 notifyItemChanged(prev)
             }
             notifyItemChanged(selectedPosition)
-            listener.onHorarioSeleccionado(horario)
+            activity.seleccionarHorario(horario)
         }
 
         override fun getItemCount(): Int = items.size
