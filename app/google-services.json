@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "592210380674",
+    "project_id": "medicdate-50b6d",
+    "storage_bucket": "medicdate-50b6d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:592210380674:android:f1b1d0f3aaa71ea837b19b",
+        "android_client_info": {
+          "package_name": "com.example.medicdate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQ88RL1_hDp-DJtkNFflnT9dNMfNJeptw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
